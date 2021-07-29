@@ -1,4 +1,9 @@
-async function setupCamera() {
+let useFront = true;
+let stream = null;
+let stop_detect = false;
+let net = null;
+
+async function setupCamera(mode) {
 	if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
 		throw new Error(
 			'Browser API navigator.mediaDevices.getUserMedia not available');
@@ -11,10 +16,10 @@ async function setupCamera() {
 	video.width = videoWidth;
 	video.height = videoHeight;
 
-	const stream = await navigator.mediaDevices.getUserMedia({
+	stream = await navigator.mediaDevices.getUserMedia({
 		'audio': false,
 		'video': {
-			facingMode: 'user',
+			facingMode: mode,
 			width: videoWidth,
 			height: videoHeight,
 		},
@@ -40,9 +45,10 @@ export function isMobile() {
 	return isAndroid() || isiOS();
 }
 
-async function loadVideo() {
-	const video = await setupCamera();
+async function loadVideo(mode) {
+	const video = await setupCamera(mode);
 	video.play();
+	stop_detect = false;
 
 	return video;
 }
@@ -193,16 +199,27 @@ function detectPoseInRealTime(video, net) {
 			ctx.restore();
 		}
 
+		// draw background
+		ctx.fillStyle = "#FFFFFF";
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		poses.forEach(({ score, keypoints }) => {
 			if (score >= minPoseConfidence) {
 				drawPictgram(keypoints, ctx);
 			}
 		});
 
-		requestAnimationFrame(poseDetectionFrame);
+		if (!stop_detect) {
+			requestAnimationFrame(poseDetectionFrame);
+		} else {
+			console.log("stop detect");
+		}
 	}
 
-	poseDetectionFrame();
+	if (!stop_detect) {
+		poseDetectionFrame();
+	} else {
+		console.log("stop detect");
+	}
 }
 
 function drawPictgram(keypoints, ctx) {
@@ -219,10 +236,6 @@ function drawPictgram(keypoints, ctx) {
 	// calc lineWidth
 	const lineWidth = scale * lineWeight;
 
-	// background
-	const canvas = document.getElementById('output');
-	ctx.fillStyle = "#FFFFFF";
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 	// nose
 	ctx.beginPath();
@@ -317,13 +330,21 @@ function drawPictgram(keypoints, ctx) {
 
 }
 
-$('.save-btn').on('click', function() {
-	let canvas = document.getElementById('output')
-	var link = document.getElementById('hiddenLink');
-  	link.setAttribute('download', 'ano-pictogram.png');
-  	link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
-  	link.click();
-});
+function syncCamera(video){
+	useFront = !useFront;
+	const mode = (useFront) ? "user" : { exact: "environment" };
+	console.log(mode);
+	stop_detect = true;
+	if (stream !== null) {
+		stream.getVideoTracks().forEach((camera) => {
+			camera.stop();
+		});
+	}
+	(async () => {
+		let v = await loadVideo(mode);
+		detectPoseInRealTime(video, guiState.net);
+	})();
+}
 
 
 (async () => {
@@ -334,8 +355,19 @@ $('.save-btn').on('click', function() {
 		multiplier: guiState.input.multiplier,
 		quantBytes: guiState.input.quantBytes
 	});
-	let video = await loadVideo();
+	let video = await loadVideo('user');
 	guiState.net = net;
+	$('.save-btn').on('click', function() {
+		let canvas = document.getElementById('output')
+		var link = document.getElementById('hiddenLink');
+	  	link.setAttribute('download', 'ano-pictogram.png');
+	  	link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+	  	link.click();
+	});
+	$('.cam-toggle-btn').on('click', function() {
+		syncCamera(video);
+	});
+
 	detectPoseInRealTime(video, net);
 })();
 
