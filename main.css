@@ -1,0 +1,43 @@
+canvas {
+	background-color: #FFFFFF;
+	border: 2px solid;
+	border-color: #001248;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF; 
+}
+
+.share-btn {
+	color: #fff;
+	background-color: #00acee;
+	border-color: #00acee; 
+}
+
+.save-btn {
+	color: #fff;
+	background-color: #001248;
+	border-color: #001248; 
+}
+
+.main-contents{
+  width: 100%;
+  /* max-width: 300px; */
+  margin: auto;
+}
+
+@media (min-width: 768px) { 
+
+	.main-padding-x {
+		padding-left:3rem;
+		padding-right:3rem;
+	}
+}
+
