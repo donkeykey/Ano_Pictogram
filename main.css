@@ -39,6 +39,12 @@ body {
 	border-color: #333333; 
 }
 
+.color-toggle-btn {
+	color: #fff;
+	background-color: #333333;
+	border-color: #333333; 
+}
+
 .main-contents{
   width: 100%;
   /* max-width: 300px; */

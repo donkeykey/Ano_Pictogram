@@ -2,6 +2,7 @@ let useFront = true;
 let stream = null;
 let stop_detect = false;
 let net = null;
+let whiteColorMode = true;
 
 async function setupCamera(mode) {
 	if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -200,7 +201,11 @@ function detectPoseInRealTime(video, net) {
 		}
 
 		// draw background
-		ctx.fillStyle = "#FFFFFF";
+		if (whiteColorMode) {
+			ctx.fillStyle = "#FFFFFF";
+		} else {
+			ctx.fillStyle = "#001248";
+		}
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		poses.forEach(({ score, keypoints }) => {
 			if (score >= minPoseConfidence) {
@@ -223,7 +228,10 @@ function detectPoseInRealTime(video, net) {
 }
 
 function drawPictgram(keypoints, ctx) {
-	const color = "#001248";
+	let color = "#001248";
+	if (!whiteColorMode) {
+		color = "#FFFFFF"
+	}
 	const headWeight = 1.2;
 	const lineWeight = 1.2;
 
@@ -346,6 +354,29 @@ function syncCamera(video){
 	})();
 }
 
+function reverseColor(){
+	whiteColorMode = !whiteColorMode;
+	if (whiteColorMode) {
+		$("body").css("background-color", "#FFFFFF")
+		$("h6").css("color", "#001248")
+		$("canvas").css("border-color", "#001248")
+		$(".save-btn").css({
+			"border-color": "#001248",
+			"background-color": "#001248",
+			"color": "#FFFFFF",
+		})
+	} else {
+		$("body").css("background-color", "#001248")
+		$("h6").css("color", "#FFFFFF")
+		$("canvas").css("border-color", "#FFFFFF")
+		$(".save-btn").css({
+			"border-color": "#dfdfdf",
+			"background-color": "#dfdfdf",
+			"color": "#001248",
+		})
+	}
+}
+
 
 (async () => {
 	const net = await posenet.load({
@@ -366,6 +397,9 @@ function syncCamera(video){
 	});
 	$('.cam-toggle-btn').on('click', function() {
 		syncCamera(video);
+	});
+	$('.color-toggle-btn').on('click', function() {
+		reverseColor();
 	});
 
 	detectPoseInRealTime(video, net);
