@@ -6,6 +6,15 @@
     <meta name="description" content="">
     <meta name="author" content="Daichi Kawashima">
 
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#"></head>
+    <meta property="og:url" content="https://donkeykey.github.io/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="#あのピクトグラム" />
+    <meta property="og:description" content="どこかで見た、#あのピクトグラム に、あなたもなれる。" />
+    <meta property="og:site_name" content="#あのピクトグラム" />
+    <meta property="og:image" content="/thmbnail.png" />
+
+    <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link href="./main.css" rel="stylesheet">
@@ -21,7 +30,7 @@
 
   <body class="d-flex flex-column text-center vh-100">
     <header>
-      <h6 class="my-4" style="color:#001248;font-weight:700;">#あのピクトグラム</h6>
+      <h6 class="my-4 wf-nicomoji" style="color:#001248;font-weight:700;font-size: 3rem;">#あのピクトグラム</h6>
     </header>
     <div class="container h-75 main-padding-x">
       <main class="main-contents h-100">
@@ -29,18 +38,19 @@
         <canvas id="output"></canvas>
       </main>
     </div>
+    <img style="display:none;" id='cat' src='./c.jpg '/>
 
 
 		<div class="container">
       <div class="row justify-content-md-center">
         <div class="col-sm">
-          <button type="button" class="btn save-btn my-1">画像を保存</button>
+          <button type="button" class="btn save-btn my-1 wf-nicomoji">さつえい</button>
         </div>
         <div class="col-sm">
-          <button onclick="location.href='https://twitter.com/intent/tweet?url=https%3A%2F%2Fdonkeykey.github.io&text=%23あのピクトグラム&tw_p=tweetbutton'" type="button" class="btn share-btn my-1">Twitterでシェア</button>
+          <button onclick="location.href='https://twitter.com/intent/tweet?url=https%3A%2F%2Fdonkeykey.github.io&text=%23あのピクトグラム&tw_p=tweetbutton'" type="button" class="btn share-btn my-1 wf-nicomoji">Twitterでシェア</button>
         </div>
         <div class="col-sm">
-          <button type="button" class="btn cam-toggle-btn my-1">カメラ切替</button>
+          <button type="button" class="btn cam-toggle-btn my-1 wf-nicomoji">カメラ きりかえ</button>
         </div>
         <a id="hiddenLink" style="display:none;">link</a>
       </div>
@@ -48,7 +58,7 @@
 
   <footer class="footer">
 		<div class="container">
-      <p class="fs-6 mt-4 text-muted">&copy; Daichi Kawashima 2021 </p>
+      <p class="fs-6 mt-4 text-muted wf-nicomoji">&copy; Daichi Kawashima 2021 </p>
 		</div>
 	</footer>
   </body>

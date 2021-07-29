@@ -225,7 +225,7 @@ function detectPoseInRealTime(video, net) {
 function drawPictgram(keypoints, ctx) {
 	const color = "#001248";
 	const headWeight = 1.2;
-	const lineWeight = 1.0;
+	const lineWeight = 1.2;
 
 	// calc scale
 	const scale = Math.pow((Math.pow((keypoints[1].position.x - keypoints[2].position.x), 2) + Math.pow((keypoints[1].position.y - keypoints[2].position.y), 2)), 0.5);
