@@ -89,7 +89,7 @@ function detectPoseInRealTime(video, net) {
 	const canvas = document.getElementById('output');
 	const ctx = canvas.getContext('2d');
 
-	const flipPoseHorizontal = true;
+	const flipPoseHorizontal = useFront;
 
 	let videoWidth = $('.main-contents').innerWidth() * 0.95;
 	let videoHeight = $('.main-contents').innerHeight() * 0.95;
