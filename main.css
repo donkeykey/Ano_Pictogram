@@ -28,10 +28,23 @@ body {
 	border-color: #00acee; 
 }
 
+.background-btn {
+	color: #fff;
+	background-color: #333333;
+	border-color: #333333; 
+}
+
+.frame-btn {
+	color: #fff;
+	background-color: #333333;
+	border-color: #333333; 
+}
+
 .save-btn {
 	color: #fff;
 	background-color: #001248;
 	border-color: #001248; 
+	height:4.25rem;
 }
 
 .cam-toggle-btn {

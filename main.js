@@ -3,6 +3,9 @@ let stream = null;
 let stop_detect = false;
 let net = null;
 let whiteColorMode = true;
+let drawCircleMask = false;
+let videoWidth = 0;
+let videoHeight = 0;
 
 async function setupCamera(mode) {
 	if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -10,8 +13,8 @@ async function setupCamera(mode) {
 			'Browser API navigator.mediaDevices.getUserMedia not available');
 	}
 
-	let videoWidth = $('.main-contents').innerWidth() * 0.95;
-	let videoHeight = $('.main-contents').innerHeight() * 0.95;
+	videoWidth = $('.main-contents').outerWidth() * 0.95;
+	videoHeight = $('.main-contents').outerHeight() * 0.95;
 
 	const video = document.getElementById('video');
 	video.width = videoWidth;
@@ -92,8 +95,6 @@ function detectPoseInRealTime(video, net) {
 
 	const flipPoseHorizontal = useFront;
 
-	let videoWidth = $('.main-contents').innerWidth() * 0.95;
-	let videoHeight = $('.main-contents').innerHeight() * 0.95;
 	canvas.width = videoWidth;
 	canvas.height = videoHeight;
 
@@ -197,21 +198,40 @@ function detectPoseInRealTime(video, net) {
 			ctx.save();
 			ctx.scale(-1, 1);
 			ctx.translate(-videoWidth, 0);
+			ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
 			ctx.restore();
+		} else {
+			// draw background
+			if (whiteColorMode) {
+				ctx.fillStyle = "#FFFFFF";
+			} else {
+				ctx.fillStyle = "#001248";
+			}
+			ctx.fillRect(0, 0, canvas.width, canvas.height);
 		}
 
-		// draw background
-		if (whiteColorMode) {
-			ctx.fillStyle = "#FFFFFF";
-		} else {
-			ctx.fillStyle = "#001248";
-		}
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
+
 		poses.forEach(({ score, keypoints }) => {
 			if (score >= minPoseConfidence) {
 				drawPictgram(keypoints, ctx);
 			}
 		});
+
+		if (drawCircleMask) {
+			//$("canvas").css("border", "0px solid");
+			ctx.globalCompositeOperation = 'destination-in';
+			ctx.arc(videoWidth/2, videoHeight/2, videoHeight/2, Math.PI * 2, 0, false);
+			ctx.fill();
+
+			ctx.globalCompositeOperation = "source-over";
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = "#001248";
+			ctx.beginPath();
+			ctx.arc(videoWidth/2, videoHeight/2, videoHeight/2, Math.PI * 2, 0, false);
+			ctx.stroke();
+		} else {
+			//$("canvas").css("border", "2px solid");
+		}
 
 		if (!stop_detect) {
 			requestAnimationFrame(poseDetectionFrame);
@@ -335,7 +355,6 @@ function drawPictgram(keypoints, ctx) {
 	ctx.lineTo(keypoints[16].position.x, keypoints[16].position.y);
 	ctx.stroke();
 
-
 }
 
 function syncCamera(video){
@@ -400,6 +419,12 @@ function reverseColor(){
 	});
 	$('.color-toggle-btn').on('click', function() {
 		reverseColor();
+	});
+	$('.background-btn').on('click', function() {
+		guiState.output.showVideo = !guiState.output.showVideo;
+	});
+	$('.frame-btn').on('click', function() {
+		//drawCircleMask = !drawCircleMask;
 	});
 
 	detectPoseInRealTime(video, net);

@@ -28,11 +28,21 @@
      crossorigin="anonymous"></script>
     <title>#あのピクトグラム</title>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EMLF1W7TCT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'G-EMLF1W7TCT');
+    </script>
+
   </head>
 
   <body class="d-flex flex-column text-center vh-100">
     <header>
-      <h6 class="my-4 wf-nicomoji" style="color:#001248;font-weight:700;font-size: 2.8rem;">#あのピクトグラム</h6>
+      <h6 class="my-2 wf-nicomoji" style="color:#001248;font-weight:700;font-size: 2.8rem;">#あのピクトグラム</h6>
     </header>
     <div class="container h-75 main-padding-x">
       <main class="main-contents h-100">
@@ -40,30 +50,46 @@
         <canvas id="output"></canvas>
       </main>
     </div>
-
-		<div class="container">
-      <div class="row gx-2 justify-content-md-center">
-        <div class="col col-xs-3">
-          <button type="button" class="btn cam-toggle-btn my-1 wf-nicomoji">カメラ きりかえ</button>
+    
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-4">
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <button type="button" class="btn background-btn my-1 wf-nicomoji">はいけい</button>
+            </div>
+            <div class="col-12">
+              <button type="button" class="btn frame-btn my-1 wf-nicomoji">フレーム</button>
+            </div>
+          </div>
         </div>
-        <div class="col col-xs-6">
+        <div class="col-4">
           <button type="button" class="btn save-btn my-1 wf-nicomoji">さつえい</button>
         </div>
-        <div class="col col-xs-3">
-          <button type="button" class="btn color-toggle-btn my-1 wf-nicomoji">いろ はんてん</button>
+        <div class="col-4">
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <button type="button" class="btn cam-toggle-btn my-1 wf-nicomoji">カメラ</button>
+            </div>
+            <div class="col-12">
+              <button type="button" class="btn color-toggle-btn my-1 wf-nicomoji">いろ</button>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row justify-content-md-center">
-        <div class="col col-xs">
-          <button onclick="location.href='https://twitter.com/intent/tweet?url=https%3A%2F%2Fdonkeykey.github.io&text=%23あのピクトグラム&tw_p=tweetbutton'" type="button" class="btn share-btn my-1 wf-nicomoji">Twitterでシェア</button>
+        <div class="col-12">
+          <button
+            onclick="location.href='https://twitter.com/intent/tweet?url=https%3A%2F%2Fdonkeykey.github.io&text=%23あのピクトグラム&tw_p=tweetbutton'"
+            type="button" class="btn share-btn my-1 wf-nicomoji">Twitterでシェア</button>
         </div>
         <a id="hiddenLink" style="display:none;">link</a>
       </div>
     </div>
-
-  <footer class="footer">
-		<div class="container">
-      <p class="fs-6 mt-4 text-muted wf-nicomoji">&copy; <a class="text-muted" href="https://twitter.com/daichi000daichi" >Daichi Kawashima</a> 2021</p>
+    
+    <footer class="footer">
+      <div class="container">
+      <p class="fs-6 mt-1 text-muted wf-nicomoji">&copy; <a class="text-muted" href="https://twitter.com/daichi000daichi" >Daichi Kawashima</a> 2021</p>
 		</div>
 	</footer>
   </body>
