@@ -220,19 +220,36 @@ function detectPoseInRealTime(video, net) {
 		});
 
 		if (drawCircleMask) {
-			//$("canvas").css("border", "0px solid");
+			$("canvas").css("border", "0px solid");
 			ctx.globalCompositeOperation = 'destination-in';
-			ctx.arc(videoWidth/2, videoHeight/2, videoHeight/2, Math.PI * 2, 0, false);
+			if (videoHeight < videoWidth) {
+				ctx.arc(videoWidth/2, videoHeight/2, videoHeight/2, Math.PI * 2, 0, false);
+			} else {
+				ctx.arc(videoWidth/2, videoHeight/2, videoWidth/2, Math.PI * 2, 0, false);
+			}
 			ctx.fill();
 
 			ctx.globalCompositeOperation = "source-over";
 			ctx.lineWidth = 2;
-			ctx.strokeStyle = "#001248";
+			if (whiteColorMode) {
+				ctx.strokeStyle = "#001248";
+			} else {
+				ctx.strokeStyle = "#FFFFFF";
+			}
 			ctx.beginPath();
-			ctx.arc(videoWidth/2, videoHeight/2, videoHeight/2, Math.PI * 2, 0, false);
+			if (videoHeight < videoWidth) {
+				ctx.arc(videoWidth/2, videoHeight/2, videoHeight/2 - 1, Math.PI * 2, 0, false);
+			} else {
+				ctx.arc(videoWidth/2, videoHeight/2, videoWidth/2 - 1, Math.PI * 2, 0, false);
+			}
 			ctx.stroke();
 		} else {
-			//$("canvas").css("border", "2px solid");
+			$("canvas").css("border", "2px solid");
+			if (whiteColorMode) {
+				$("canvas").css("border-color", "#001248")
+			} else {
+				$("canvas").css("border-color", "#FFFFFF")
+			}
 		}
 
 		if (!stop_detect) {
@@ -357,6 +374,8 @@ function drawPictgram(keypoints, ctx) {
 	ctx.lineTo(keypoints[16].position.x, keypoints[16].position.y);
 	ctx.stroke();
 
+	ctx.beginPath();
+	ctx.stroke();
 }
 
 function syncCamera(video){
@@ -378,6 +397,7 @@ function syncCamera(video){
 function reverseColor(){
 	whiteColorMode = !whiteColorMode;
 	if (whiteColorMode) {
+		$("canvas").css("background-color", "#FFFFFF");
 		$("body").css("background-color", "#FFFFFF")
 		$("h6").css("color", "#001248")
 		$("canvas").css("border-color", "#001248")
@@ -387,6 +407,7 @@ function reverseColor(){
 			"color": "#FFFFFF",
 		})
 	} else {
+		$("canvas").css("background-color", "#001248");
 		$("body").css("background-color", "#001248")
 		$("h6").css("color", "#FFFFFF")
 		$("canvas").css("border-color", "#FFFFFF")
@@ -426,7 +447,7 @@ function reverseColor(){
 		guiState.output.showVideo = !guiState.output.showVideo;
 	});
 	$('.frame-btn').on('click', function() {
-		//drawCircleMask = !drawCircleMask;
+		drawCircleMask = !drawCircleMask;
 	});
 
 	detectPoseInRealTime(video, net);
