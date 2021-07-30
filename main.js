@@ -196,8 +196,10 @@ function detectPoseInRealTime(video, net) {
 
 		if (guiState.output.showVideo) {
 			ctx.save();
-			ctx.scale(-1, 1);
-			ctx.translate(-videoWidth, 0);
+			if (useFront) {
+				ctx.scale(-1, 1);
+				ctx.translate(-videoWidth, 0);
+			}
 			ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
 			ctx.restore();
 		} else {
@@ -421,7 +423,7 @@ function reverseColor(){
 		reverseColor();
 	});
 	$('.background-btn').on('click', function() {
-		//guiState.output.showVideo = !guiState.output.showVideo;
+		guiState.output.showVideo = !guiState.output.showVideo;
 	});
 	$('.frame-btn').on('click', function() {
 		//drawCircleMask = !drawCircleMask;
