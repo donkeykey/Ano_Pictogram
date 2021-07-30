@@ -421,7 +421,7 @@ function reverseColor(){
 		reverseColor();
 	});
 	$('.background-btn').on('click', function() {
-		guiState.output.showVideo = !guiState.output.showVideo;
+		//guiState.output.showVideo = !guiState.output.showVideo;
 	});
 	$('.frame-btn').on('click', function() {
 		//drawCircleMask = !drawCircleMask;
